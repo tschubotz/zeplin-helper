@@ -1,3 +1,5 @@
+import os
+
 class Screen(object):
     @classmethod
     def from_json(cls, screen_json, project, api):
@@ -30,3 +32,9 @@ class Screen(object):
             self.url = response.json().get('url')
         return self.url
         
+    def download(self, filename):
+        response = self._api._get(self.latest_version_snapshot_url, build_url=False)
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+        with open(filename, 'wb') as file:
+            file.write(response.content)

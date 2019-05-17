@@ -20,19 +20,30 @@ class ZeplinAPI(object):
 
     def _post(self, path, data):
         url = self._build_url(path)
+
+        if self.verbose:
+            print('POST\t{} '.format(path), end = ''),
+
         response = self._session.post(url, data=data)
 
         if self.verbose:
-            print('POST {} {}'.format(path, response.status_code))
+            print(response.status_code)
 
         return response
 
-    def _get(self, path):
-        url = self._build_url(path)
+    def _get(self, path, build_url=True):
+        if build_url:
+            url = self._build_url(path)
+        else:
+            url = path
+
+        if self.verbose:
+            print('GET\t{} '.format(path), end = '')
+
         response = self._session.get(url)
 
         if self.verbose:
-            print('GET {} {}'.format(path, response.status_code))
+            print(response.status_code)
 
         return response
 
